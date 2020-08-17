@@ -3,9 +3,6 @@ class Game {
         this._player1 = player1;
         this._player2 = player2;
     }
-
-
-
 }
 
 class Player {
@@ -21,6 +18,10 @@ class Player {
 
     get move() {
         return this._move;
+    }
+
+    get gamesWon() {
+        return this._gamesWon;
     }
 }
 
@@ -38,5 +39,14 @@ let newGame = new Game(firstPlayer, secondPlayer);
 firstPlayer.selectSign("Scissors");
 secondPlayer.selectSign("Rock");
 // evaluate who won --> Thomas
-whoWon(firstPlayer, secondPlayer) {
+
+while (true) {
+    if (firstPlayer.gamesWon === 3 || secondPlayer.gamesWon === 3) {
+        console.log("Player won!");
+        break;
+    } else {
+        play(firstPlayer, secondPlayer);
+        newGame.displayScore;
+    }
 }
+

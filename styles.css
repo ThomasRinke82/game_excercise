@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);
+  font-family: sans-serif;
+}
+
+.score,
+.roshambo {
+  color: rgb(224, 224, 224);
+  height: 20vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.score h2 {
+  font-size: 30px;
+}
+
+.score p {
+  text-align: center;
+  padding: 10px;
+  font-size: 25px;
+}
+
+.intro {
+  color: rgb(224, 224, 224);
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.match {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#displayMessage {
+  color: rgb(224, 224, 224);
+  text-align: center;
+  font-size: 50px;
+  display: flex;
+}
+
+.hands {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.match {
+  position: absolute;
+  top: 400px;
+  left: center;
+}
+
+.options {
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  justify-content: space-around;
+}

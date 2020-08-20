@@ -3,15 +3,18 @@ class Game {
     this._rounds = rounds;
     this._playerOne = playerOne;
     this._playerTwo = playerTwo;
+    this._stateOfPlay = "newGame";
+    this._roundsPlayed = 0;
   }
 
+  // Play function checks what both players chose, then triggers score changes
   play(playerOne, playerTwo) {
-    console.log(playerOne.move);
-    switch (playerOne.move + playerTwo.move) {
+    switch (playerOne.move.sign + playerTwo.move.sign) {
       case "rockscissors":
       case "scissorspaper":
       case "paperrock":
         playerOne.win();
+        gametext.innerHTML =  `${playerOne.name} wins! Next round!`;
         playerOne.move = "";
         playerTwo.move = "";
         break;
@@ -21,6 +24,7 @@ class Game {
         playerTwo.win();
           playerOne.move = "";
           playerTwo.move = "";
+          gametext.innerHTML =  `${playerTwo.name} wins! Next round!`;
         break;
       default:
           playerOne.move = "";
@@ -40,11 +44,27 @@ class Game {
   get rounds() {
     return this._rounds;
   }
+
+  get stateOfPlay() {
+      return this._stateOfPlay;
+  }
+
+  get roundsPlayed() {
+      return this._roundsPlayed;
+  }
+
+  set roundsPlayed(num) {
+      this._roundsPlayed = num;
+  }
+
+  roundPlayed() {
+      this._roundsPlayed += 1;
+  }
 }
 
 class Player {
-  constructor() {
-    this._name = "";
+  constructor(name) {
+    this._name = name;
     this._gamesWon = 0;
     this._move = "";
   }
@@ -57,12 +77,20 @@ class Player {
     return this._gamesWon;
   }
 
+  set gamesWon(num) {
+      this._gamesWon = num;
+  }
+
   get move() {
     return this._move;
   }
 
-  selectSign(input) {
-    this._move = input;
+  set move(inp) {
+      this._move = inp;
+  }
+
+  set name (name){
+      this._name = name;
   }
 
   win() {
@@ -80,114 +108,78 @@ class Move {
   }
 }
 
-// Initial set-up - before start screen
-let scissors = new Move("scissors");
-let rock = new Move("rock");
-let paper = new Move("paper");
-
-// --> Start Part of Thomas
-
-//function to ask the player to insert name
-//via prompt and then display the value as playerName
-
-//Button naming
-const btnNameOne = document.getElementById("player1-name");
-const enterNameOne = document.getElementById("player1");
-const btnNameTwo = document.getElementById("player2-name");
-const enterNameTwo = document.getElementById("player2");
-const startgame = document.getElementById("btn-startgame");
-const gametext = document.getElementById("displayMessage");
-const btnrock = document.getElementById("btnStone");
-const btnpaper = document.getElementById("btnPaper");
-const btnscissors = document.getElementById("btnScissors");
-const btnclick = document.querySelector(".options");
-
-// Player Creation - start screen
-let createFirst = new Player();
-let createSecond = new Player();
-
-// Name change Buttons Event Listeners
-btnNameOne.addEventListener("click", addPlayerName.bind(null, enterNameOne, btnNameOne, createFirst));
-btnNameTwo.addEventListener("click", addPlayerName.bind(null, enterNameTwo, btnNameTwo, createSecond));
-
-function addPlayerName(inputField, buttonChange, playerId) {
-    let playerName = prompt("Enter your name here:");
+// Function to enter names with a prompt
+function addPlayer(number) {
+    let playerName = prompt(`Player ${number} Please enter your name!`);
     if (playerName === "") {
-        addPlayerName(inputField, buttonChange, playerId);
+        addPlayer();
     } else {
-        inputField.innerHTML = playerName;
-        buttonChange.style.display = "none";
-        playerId._name = playerName;
-        console.log(playerId);
+        return playerName;
     }
 }
 
-startgame.addEventListener("click", gameStart);
+//Button and field naming for easier access
+const gametext = document.getElementById("displayMessage");
+const btnrock = document.getElementById("btnRock");
+const btnpaper = document.getElementById("btnPaper");
+const btnscissors = document.getElementById("btnScissors");
+const scoreOne = document.querySelector("#player1-score");
+const scoreTwo = document.querySelector("#player2-score");
+const numRounds = document.querySelector("#NumRounds");
 
-function gameStart() {
+// Player Creation - start screen
+let createFirst = new Player(addPlayer("1"));
+let createSecond = new Player(addPlayer("2"));
+let newGame = new Game(3, createFirst, createSecond);
 
-    // Game Initialization
-    gametext.innerHTML = document.querySelector("#player1").textContent +  ", what is your choice?";
-    let newGame = new Game(3, createFirst, createSecond);
+// Naming for Game for easier access
+let playerOne = newGame.playerOne;
+let playerTwo = newGame.playerTwo;
+let state = newGame.stateOfPlay;
 
-    // Naming for Game Loop
-    let playerOne = newGame.playerOne;
-    let playerTwo = newGame.playerTwo;
+// Set the displayed names to the entered names
+document.querySelector("#player1").textContent = playerOne.name;
+document.querySelector("#player2").textContent = playerTwo.name;
 
+// First message
+gametext.innerHTML =  `${playerOne.name}, which weapon do you choose?`;
 
-    // True is Player 1
-    let turn = true;
+// Event listeners for the three buttons
+btnrock.addEventListener("click", gameLoop);
+btnscissors.addEventListener("click", gameLoop);
+btnpaper.addEventListener("click", gameLoop);
 
-    //Game Loop
-    while (true) {
-        if (
-            playerOne.gamesWon === newGame.rounds ||
-            playerTwo.gamesWon === newGame.rounds
-        ) {
-            console.log("Player won!");
-            break;
-        } else {
-            btnrock.addEventListener("click", () => {
-                if (turn === true) {
-                    playerOne.move = "rock";
-                } else {
-                    playerTwo.move = "rock";
-                }
-                if (playerOne.move === "" || playerTwo.move === "") {}
-                else {
-                    newGame.play(playerOne, playerTwo);
-                    console.log(
-                        `${playerOne.name}: ${playerOne.gamesWon} - ${playerTwo.name}: ${playerTwo.gamesWon}`);
-                }
-            })
+function gameLoop(eve) {
+    // New Game resets all values
+    if (state === "newGame") {
+        playerOne.gamesWon = 0;
+        playerTwo.gamesWon = 0;
+        newGame.roundsPlayed = 0;
+        state = "play1";
+    }
 
-            btnscissors.addEventListener("click", () => {
-                if (turn === true) {
-                    playerOne.move = "scissors";
-                } else {
-                    playerTwo.move = "scissors";
-                }
-                if (playerOne.move === "" || playerTwo.move === "") {}
-                else {
-                    newGame.play(playerOne, playerTwo);
-                    console.log(
-                        `${playerOne.name}: ${playerOne.gamesWon} - ${playerTwo.name}: ${playerTwo.gamesWon}`);
-                }
-            })
+    // Check who's turn it is
+    if (state === "play1") {
+        playerOne.move = new Move(eve.target.textContent);
+        state = "play2";
+        gametext.innerHTML =  `${playerTwo.name}, which weapon do you choose?`;
+    } else if (state === "play2") {
+        playerTwo.move = new Move(eve.target.textContent);
+        newGame.play(playerOne, playerTwo);
+        newGame.roundPlayed();
+        state = "play1";
+    }
+    // display the new scores
+    scoreOne.textContent = playerOne.gamesWon;
+    scoreTwo.textContent = playerTwo.gamesWon;
+    numRounds.textContent = newGame.roundsPlayed;
 
-            btnpaper.addEventListener("click", () => {
-                if (turn === true) {
-                    playerOne.move = "paper";
-                } else {
-                    playerTwo.move = "paper";
-                }
-                if (playerOne.move === "" || playerTwo.move === "") {}
-                else {
-                    newGame.play(playerOne, playerTwo);
-                    console.log(
-                        `${playerOne.name}: ${playerOne.gamesWon} - ${playerTwo.name}: ${playerTwo.gamesWon}`);
-                }
-            })
-        }
+    // Check if someone won
+    if (playerOne.gamesWon === newGame.rounds) {
+        gametext.innerHTML = `${playerOne.name} won ${newGame.rounds} rounds! Game over!`;
+        state = "newGame";
+    } else if (playerTwo.gamesWon === newGame.rounds) {
+        gametext.innerHTML = `${playerTwo.name} won ${newGame.rounds} rounds! Game over!`;
+        state = "newGame";
     }
 }

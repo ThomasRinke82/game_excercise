@@ -79,6 +79,8 @@ let scissors = new Move("scissors");
 let rock = new Move("rock");
 let paper = new Move("paper");
 
+// --> Start Part of Thomas
+
 //function to ask the player to insert name
 //via prompt and then display the value as playerName
 
@@ -101,6 +103,8 @@ btnNameTwo.addEventListener("click", function () {
   enterNameTwo.innerHTML = playerName;
   btnNameTwo.style.display = "none";
 });
+
+// --> End Part of Thomas
 
 // Player Creation - start screen
 let createFirst = new Player("Kevin");

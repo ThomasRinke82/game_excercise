@@ -104,6 +104,17 @@ btnNameTwo.addEventListener("click", function () {
   btnNameTwo.style.display = "none";
 });
 
+const startgame = document.getElementById("btn-startgame");
+const gametext = document.getElementById("displayMessage");
+const btnrock = document.getElementById("btnStone");
+const btnpaper = document.getElementById("btnPaper");
+const btnscissors = document.getElementById("btnScissors");
+const btnclick = document.querySelector(".options");
+
+startgame.addEventListener("click", function () {
+  gametext.innerHTML = "Player One, what is your choice?";
+});
+
 // --> End Part of Thomas
 
 // Player Creation - start screen

@@ -7,7 +7,6 @@
     <title>rock paper and scissors</title>
   </head>
   <body>
-
     <script>
       src = "js/main.js";
     </script>
@@ -21,37 +20,38 @@
     <div class="game">
       <div class="roshambo">
         <h2>Roshambo</h2></div>
-        
+      
       <div class="score">
         <div>
-          <h2>Player 1</h2>
+          <button type="button" value="submit" id="player1-name">
+            What is your name?
+          </button>
+          <h2 id="player1">Player 1</h2>
           <p id="player1-score">0</p>
         </div>
         <div>
-          <h2>Player 2</h2>
+          <button type="button" value="submit" id="player2-name">
+            What is your name?
+          </button>
+          <h2 id="player2">Player 2</h2>
           <p id="player2-score">0</p>
         </div>
       </div>
     </div>
 
-
     <div class="match">
       <h2 id="displayMessage">choose an option</h2>
       <div class="hands">
-        <img class="player1-hand" src="assets/stone.png" alt="">
-        <img class="player2-hand" src="./assets/stone.png" alt="">
-
+        <img class="player1-hand" src="assets/stone.png" alt="" />
+        <img class="player2-hand" src="./assets/stone.png" alt="" />
       </div>
-        <div class="options">
-          <button id="btnStone">stone</button>
-          <button id="btnPaper">paper</button>
-          <button id="btnScissors">scissors</button>
-
-        </div>
+      <div class="options">
+        <button id="btnStone">stone</button>
+        <button id="btnPaper">paper</button>
+        <button id="btnScissors">scissors</button>
       </div>
-
-
     </div>
 
+    <script src="./js/main.js"></script>
   </body>
 </html>

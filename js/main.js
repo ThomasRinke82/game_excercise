@@ -12,13 +12,19 @@ class Game {
       case "scissorspaper":
       case "paperrock":
         playerOne.win();
+        playerOne.move = "";
+        playerTwo.move = "";
         break;
       case "rockpaper":
       case "scissorsrock":
       case "paperscissors":
         playerTwo.win();
+          playerOne.move = "";
+          playerTwo.move = "";
         break;
       default:
+          playerOne.move = "";
+          playerTwo.move = "";
         break;
     }
   }
@@ -37,8 +43,8 @@ class Game {
 }
 
 class Player {
-  constructor(name) {
-    this._name = name;
+  constructor() {
+    this._name = "";
     this._gamesWon = 0;
     this._move = "";
   }
@@ -84,26 +90,11 @@ let paper = new Move("paper");
 //function to ask the player to insert name
 //via prompt and then display the value as playerName
 
-//player1
+//Button naming
 const btnNameOne = document.getElementById("player1-name");
 const enterNameOne = document.getElementById("player1");
-
-btnNameOne.addEventListener("click", function () {
-  let playerName = prompt("Enter your name here:");
-  enterNameOne.innerHTML = playerName;
-  btnNameOne.style.display = "none";
-});
-
-//player2 -> find a way to reduce duplicate code
 const btnNameTwo = document.getElementById("player2-name");
 const enterNameTwo = document.getElementById("player2");
-
-btnNameTwo.addEventListener("click", function () {
-  let playerName = prompt("Enter your name here:");
-  enterNameTwo.innerHTML = playerName;
-  btnNameTwo.style.display = "none";
-});
-
 const startgame = document.getElementById("btn-startgame");
 const gametext = document.getElementById("displayMessage");
 const btnrock = document.getElementById("btnStone");
@@ -111,38 +102,92 @@ const btnpaper = document.getElementById("btnPaper");
 const btnscissors = document.getElementById("btnScissors");
 const btnclick = document.querySelector(".options");
 
-startgame.addEventListener("click", function () {
-  gametext.innerHTML = "Player One, what is your choice?";
-});
-
-// --> End Part of Thomas
-
 // Player Creation - start screen
-let createFirst = new Player("Kevin");
-let createSecond = new Player("Aria");
+let createFirst = new Player();
+let createSecond = new Player();
 
-// Game Initialization
-let newGame = new Game(3, createFirst, createSecond);
+// Name change Buttons Event Listeners
+btnNameOne.addEventListener("click", addPlayerName.bind(null, enterNameOne, btnNameOne, createFirst));
+btnNameTwo.addEventListener("click", addPlayerName.bind(null, enterNameTwo, btnNameTwo, createSecond));
 
-// Naming for Game Loop
-let playerOne = newGame.playerOne;
-let playerTwo = newGame.playerTwo;
+function addPlayerName(inputField, buttonChange, playerId) {
+    let playerName = prompt("Enter your name here:");
+    if (playerName === "") {
+        addPlayerName(inputField, buttonChange, playerId);
+    } else {
+        inputField.innerHTML = playerName;
+        buttonChange.style.display = "none";
+        playerId._name = playerName;
+        console.log(playerId);
+    }
+}
 
-//Game Loop
-while (true) {
-  if (
-    playerOne.gamesWon === newGame.rounds ||
-    playerTwo.gamesWon === newGame.rounds
-  ) {
-    console.log("Player won!");
-    break;
-  } else {
-    // Player input has to be implemented - DOM
-    playerOne.selectSign(scissors.sign);
-    playerTwo.selectSign(rock.sign);
-    newGame.play(playerOne, playerTwo);
-    console.log(
-      `${playerOne.name}: ${playerOne.gamesWon} - ${playerTwo.name}: ${playerTwo.gamesWon}`
-    );
-  }
+startgame.addEventListener("click", gameStart);
+
+function gameStart() {
+
+    // Game Initialization
+    gametext.innerHTML = document.querySelector("#player1").textContent +  ", what is your choice?";
+    let newGame = new Game(3, createFirst, createSecond);
+
+    // Naming for Game Loop
+    let playerOne = newGame.playerOne;
+    let playerTwo = newGame.playerTwo;
+
+
+    // True is Player 1
+    let turn = true;
+
+    //Game Loop
+    while (true) {
+        if (
+            playerOne.gamesWon === newGame.rounds ||
+            playerTwo.gamesWon === newGame.rounds
+        ) {
+            console.log("Player won!");
+            break;
+        } else {
+            btnrock.addEventListener("click", () => {
+                if (turn === true) {
+                    playerOne.move = "rock";
+                } else {
+                    playerTwo.move = "rock";
+                }
+                if (playerOne.move === "" || playerTwo.move === "") {}
+                else {
+                    newGame.play(playerOne, playerTwo);
+                    console.log(
+                        `${playerOne.name}: ${playerOne.gamesWon} - ${playerTwo.name}: ${playerTwo.gamesWon}`);
+                }
+            })
+
+            btnscissors.addEventListener("click", () => {
+                if (turn === true) {
+                    playerOne.move = "scissors";
+                } else {
+                    playerTwo.move = "scissors";
+                }
+                if (playerOne.move === "" || playerTwo.move === "") {}
+                else {
+                    newGame.play(playerOne, playerTwo);
+                    console.log(
+                        `${playerOne.name}: ${playerOne.gamesWon} - ${playerTwo.name}: ${playerTwo.gamesWon}`);
+                }
+            })
+
+            btnpaper.addEventListener("click", () => {
+                if (turn === true) {
+                    playerOne.move = "paper";
+                } else {
+                    playerTwo.move = "paper";
+                }
+                if (playerOne.move === "" || playerTwo.move === "") {}
+                else {
+                    newGame.play(playerOne, playerTwo);
+                    console.log(
+                        `${playerOne.name}: ${playerOne.gamesWon} - ${playerTwo.name}: ${playerTwo.gamesWon}`);
+                }
+            })
+        }
+    }
 }

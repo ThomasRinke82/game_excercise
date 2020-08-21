@@ -10,6 +10,11 @@ body {
   font-family: sans-serif;
 }
 
+.startgame {
+  display: flex;
+  justify-content: space-around;
+}
+
 .score,
 .roshambo {
   color: rgb(224, 224, 224);

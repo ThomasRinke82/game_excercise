@@ -57,16 +57,15 @@ body {
   justify-content: space-around;
   align-items: center;
   width: auto;
-  height: 10vw;
+  padding: 0 200px;
 }
 
 .options {
   display: flex;
-  width: 400px;
+  padding: 0 25%;
   text-align: center;
-  justify-content: center;
   justify-content: space-around;
-  margin-top: 100px;
+  margin: 20px;
   align-items: center;
 }
 

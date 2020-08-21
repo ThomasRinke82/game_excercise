@@ -29,6 +29,7 @@ class Game {
       default:
           playerOne.move = "";
           playerTwo.move = "";
+          gametext.innerHTML =  `It's a draw! Next round!`;
         break;
     }
   }
@@ -117,6 +118,7 @@ function addPlayer(number) {
         return playerName;
     }
 }
+document.querySelector(".hands").style.display = "none";
 
 //Button and field naming for easier access
 const gametext = document.getElementById("displayMessage");
@@ -126,6 +128,8 @@ const btnscissors = document.getElementById("btnScissors");
 const scoreOne = document.querySelector("#player1-score");
 const scoreTwo = document.querySelector("#player2-score");
 const numRounds = document.querySelector("#NumRounds");
+const signOne = document.querySelector(".player1-hand");
+const signTwo = document.querySelector(".player2-hand");
 
 // Player Creation - start screen
 let createFirst = new Player(addPlayer("1"));
@@ -151,6 +155,7 @@ btnpaper.addEventListener("click", gameLoop);
 
 function gameLoop(eve) {
     // New Game resets all values
+    console.log(eve);
     if (state === "newGame") {
         playerOne.gamesWon = 0;
         playerTwo.gamesWon = 0;
@@ -161,13 +166,17 @@ function gameLoop(eve) {
     // Check who's turn it is
     if (state === "play1") {
         playerOne.move = new Move(eve.target.textContent);
+        signOne.src = `./assets/${eve.target.textContent}.png`;
         state = "play2";
         gametext.innerHTML =  `${playerTwo.name}, which weapon do you choose?`;
+        document.querySelector(".hands").style.display = "none";
     } else if (state === "play2") {
         playerTwo.move = new Move(eve.target.textContent);
+        signTwo.src = `./assets/${eve.target.textContent}.png`;
         newGame.play(playerOne, playerTwo);
         newGame.roundPlayed();
         state = "play1";
+        document.querySelector(".hands").style.display = "flex";
     }
     // display the new scores
     scoreOne.textContent = playerOne.gamesWon;
